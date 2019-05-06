@@ -17,8 +17,11 @@ public:
 	matrix operator + (double const &addedValue);
 	matrix operator += (double const &addedValue) { return (*this + addedValue); };
 	void transpose ();
+	void save(std::string &filePath);
 
 	matrix(int rowCount, int columnCount);
+	matrix(std::string &filePath);
+	matrix(std::fstream &file);
 	~matrix();
 
 	std::vector<double>& operator[](std::size_t idx) { return values[idx]; }

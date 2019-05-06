@@ -7,19 +7,81 @@ matrix::matrix(int rowCount, int columnCount)
 	this->columnCount = columnCount;
 	this->rowCount = rowCount;
 	this->values = std::vector<std::vector<double>>(rowCount, std::vector<double>(columnCount));
+}
 
-	//for (auto row = 0; row < rowCount; row++)
-	//{
-	//	for (auto column = 0; column < columnCount; column++)
-	//	{
-	//		std::cout << values[row][column] << std::endl;
-	//	}
-	//}
+matrix::matrix(std::string &filePath)
+{
+	std::fstream file = std::fstream(filePath, std::fstream::in);
+	std::string line;
+	file >> rowCount;
+	file >> columnCount;
+	this->values = std::vector<std::vector<double>>(rowCount, std::vector<double>(columnCount));
+
+	int currentRow = 0;
+	int currentColumn = 0;
+	while (!file.eof())
+	{
+		file >> line;
+		if (line == std::string(1, rowSeparator))
+		{
+			currentRow++;
+			currentColumn = 0;
+		}
+		else
+		{
+			values[currentRow][currentColumn] = stof(line);
+			currentColumn++;
+		}
+	}
+	file.close(); 
 }
 
 
+matrix::matrix(std::fstream &file)
+{
+	std::string line;
+	file >> rowCount;
+	file >> columnCount;
+	this->values = std::vector<std::vector<double>>(rowCount, std::vector<double>(columnCount));
+	
+	int currentRow = 0;
+	int currentColumn = 0;
+	while (!file.eof())
+	{
+		file >> line;
+		if (line == std::to_string(rowSeparator))
+		{
+			currentRow++;
+			currentColumn = 0;
+		}
+		else
+		{
+			values[currentRow][currentColumn] = stof(line);
+			currentColumn++;
+		}
+	}
+}
+
 matrix::~matrix()
 {
+}
+
+void matrix::save(std::string &fileName)
+{
+	std::fstream file;
+	file.open(fileName, std::fstream::out);
+	file << rowCount << std::endl;
+	file << columnCount << std::endl;
+	for (auto row = 0; row < rowCount; row++)
+	{
+		for (auto column = 0; column < columnCount; column++)
+		{
+			file << values[row][column] << std::endl;
+		}
+		file << rowSeparator << std::endl;
+	}
+	file.flush();
+	file.close();
 }
 
 matrix matrix::operator + (double const &addedValue)
