@@ -87,26 +87,66 @@ void matrix::save(std::string &fileName)
 matrix matrix::operator + (double const &addedValue)
 {
 	for (auto row = 0; row < rowCount; row++)
-	{
 		for (auto column = 0; column < columnCount; column++)
-		{
 			values[row][column] += addedValue;
-		}
-	}
+
 	return *this;
+}
+
+bool matrix::equalDimensions(const matrix & a, const matrix & b)
+{
+	return (a.rowCount == b.rowCount && a.columnCount == b.columnCount);
 }
 
 void matrix::transpose()
 {
 	matrix transposed = matrix(columnCount, rowCount);
 	for (auto row = 0; row < rowCount; row++)
-	{
 		for (auto column = 0; column < columnCount; column++)
-		{
 			transposed.values[column][row] = values[row][column];
-		}
-	}
 	*this = transposed;
+}
+
+matrix matrix::multiply(const matrix &toMultiply)
+{
+	if (this->columnCount != toMultiply.rowCount)
+		throw std::exception("Trying to multiply matrices where the this.columnCount and toMultiply.rowCount don't match!");
+
+	auto multiplied = matrix(this->rowCount, toMultiply.columnCount);
+	for (auto row = 0; row < multiplied.rowCount; row++)
+		for (auto column = 0; column < multiplied.columnCount; column++)
+			for (auto edgeValue = 0; edgeValue < this->columnCount; edgeValue++)
+				multiplied.values[column][row] += this->values[row][edgeValue] * toMultiply.values[edgeValue][column];
+
+	return multiplied;
+}
+
+matrix matrix::add(const matrix &toAdd)
+{
+	if (!equalDimensions(toAdd, *this))
+		throw std::exception("Trying to add matirces of diffrent sizes!");
+	
+	auto added = matrix(toAdd.rowCount, toAdd.columnCount);
+
+	for (auto row = 0; row < rowCount; row++)
+		for (auto column = 0; column < columnCount; column++)
+			added.values[column][row] = this->values[row][column] + toAdd.values[row][column];
+
+	return added;
+}
+
+matrix matrix::substract(const matrix &toSubstract)
+{
+	if (!equalDimensions(toSubstract, *this))
+		throw std::exception("Trying to substract matirces of diffrent sizes!");
+
+	auto substracted = matrix(toSubstract.rowCount, toSubstract.columnCount);
+
+	for (auto row = 0; row < rowCount; row++)
+		for (auto column = 0; column < columnCount; column++)
+			substracted.values[column][row] = this->values[row][column] - toSubstract.values[row][column];
+
+	return substracted;
 }
 
 std::string matrix::getCellString(int row, int column)
