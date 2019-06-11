@@ -41,7 +41,7 @@ void operatorMatrixTest()
 	std::cout << codematrix.getString() << std::endl; //all cells
 
 	std::cout << "5.0 is added to all cells and matrix gets printed out:" << std::endl;
-	codematrix.addNumber(5.0); //add to all cells
+	codematrix = codematrix.addNumber(5.0); //add to all cells
 	std::cout << codematrix.getString() << std::endl;
 
 	std::cout << "Matrix is transpored and gets printed out:" << std::endl;

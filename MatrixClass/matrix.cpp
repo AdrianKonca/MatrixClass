@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "matrix.h"
-//TODO: Change the way rows are printed (add semicolon at the end
-//TODO: Rewrite getString to use method used for rows.
 
 matrix::matrix(int rowCount, int columnCount)
 {
@@ -131,7 +129,7 @@ matrix matrix::add(const matrix &toAdd)
 
 	for (auto row = 0; row < rowCount; row++)
 		for (auto column = 0; column < columnCount; column++)
-			added.values[column][row] = this->values[row][column] + toAdd.values[row][column];
+			added.values[row][column] = this->values[row][column] + toAdd.values[row][column];
 
 	return added;
 }
@@ -142,7 +140,7 @@ matrix matrix::addNumber(const float toAdd)
 
 	for (auto row = 0; row < rowCount; row++)
 		for (auto column = 0; column < columnCount; column++)
-			added.values[column][row] += this->values[column][row] + toAdd;
+			added.values[row][column] += this->values[row][column] + toAdd;
 	
 	return added;
 }
@@ -156,7 +154,7 @@ matrix matrix::substract(const matrix &toSubstract)
 
 	for (auto row = 0; row < rowCount; row++)
 		for (auto column = 0; column < columnCount; column++)
-			substracted.values[column][row] = this->values[row][column] - toSubstract.values[row][column];
+			substracted.values[row][column] = this->values[row][column] - toSubstract.values[row][column];
 
 	return substracted;
 }
