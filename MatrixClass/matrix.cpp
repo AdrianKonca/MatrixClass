@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "matrix.h"
-
+//TODO: Change the way rows are printed (add semicolon at the end
+//TODO: Rewrite getString to use method used for rows.
 
 matrix::matrix(int rowCount, int columnCount)
 {
@@ -110,13 +111,13 @@ void matrix::transpose()
 matrix matrix::multiply(const matrix &toMultiply)
 {
 	if (this->columnCount != toMultiply.rowCount)
-		throw std::exception("Trying to multiply matrices where the this.columnCount and toMultiply.rowCount don't match!");
+		throw std::exception("Trying to multiply matrices where the lefthand Matrix columnCount and righthand Matrix rowCount don't match!");
 
 	auto multiplied = matrix(this->rowCount, toMultiply.columnCount);
 	for (auto row = 0; row < multiplied.rowCount; row++)
 		for (auto column = 0; column < multiplied.columnCount; column++)
 			for (auto edgeValue = 0; edgeValue < this->columnCount; edgeValue++)
-				multiplied.values[column][row] += this->values[row][edgeValue] * toMultiply.values[edgeValue][column];
+				multiplied.values[row][column] += this->values[row][edgeValue] * toMultiply.values[edgeValue][column];
 
 	return multiplied;
 }
@@ -132,6 +133,17 @@ matrix matrix::add(const matrix &toAdd)
 		for (auto column = 0; column < columnCount; column++)
 			added.values[column][row] = this->values[row][column] + toAdd.values[row][column];
 
+	return added;
+}
+
+matrix matrix::addNumber(const float toAdd)
+{
+	auto added = matrix(this->rowCount, this->columnCount);
+
+	for (auto row = 0; row < rowCount; row++)
+		for (auto column = 0; column < columnCount; column++)
+			added.values[column][row] += this->values[column][row] + toAdd;
+	
 	return added;
 }
 

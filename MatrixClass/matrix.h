@@ -20,6 +20,7 @@ public:
 	void transpose ();
 	matrix multiply(const matrix &toMultiply);
 	matrix add(const matrix &toAdd);
+	matrix addNumber(const float toAdd);
 	matrix substract(const matrix &toSubstract);
 	void save(std::string &filePath);
 
